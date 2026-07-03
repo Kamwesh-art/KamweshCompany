@@ -23,6 +23,7 @@ def getpossessions(request,user_id):
     serializer=PossessionSerializer(possessions, many=True)
     return Response(serializer.data)
 
+
 @api_view(['DELETE'])
 def deletepossession(request, user_id):
     possession= Possessions.objects.get(id=pk)
