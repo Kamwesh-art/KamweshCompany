@@ -18,8 +18,14 @@ def addposessions(request,user_id):
 
 #getting possessions
 @api_view(['GET'])
-def getpossessions(resuest,user_id):
+def getpossessions(request,user_id):
     possessions=Possessions.objects.filter(user_id=user_id)
     serializer=PossessionSerializer(possessions, many=True)
     return Response(serializer.data)
 
+@api_view(['DELETE'])
+def deletepossession(request, user_id):
+    possession= Possessions.objects.get(id=pk)
+    possession.delete()
+
+    return Response({"message":"Possession has been deleted."})
