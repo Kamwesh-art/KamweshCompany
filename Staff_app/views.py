@@ -16,6 +16,7 @@ def addposessions(request,user_id):
         return Response(serializer.data)
     return Response(serializer.errors)
 
+
 #getting possessions
 @api_view(['GET'])
 def getpossessions(request,user_id):
