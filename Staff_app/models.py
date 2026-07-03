@@ -24,6 +24,7 @@ class Tasks(models.Model):
     def __str__(self):
         return self.task
 
+
 class Checkin(models.Model): 
     user= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
