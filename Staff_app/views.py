@@ -55,5 +55,28 @@ def deletetasks(request,user_id):
     task=Tasks.objects.get(id=user_id)
     task.delete()
 
-    return Response({"message":"task assigned deleted."})
+    return Response({"message":"Task assigned deleted."})
     
+#Checkins
+@api_view(['POST'])
+def addcheckin(request, user_id):
+    data=request.data.copy()
+    data["user"]=user_id
+    serializer=CheckinSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors)
+
+@api_view(['GET'])
+def gettasks(request, user_id):
+    checkin=Checkin.objects.filter(user_id=user_id)
+    serializer=CheckinSerializer(checkin, many=True)
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def deletetasks(request,user_id):
+    checkin=Checkin.objects.get(id=user_id)
+    checkin.delete()
+
+    return Response({"message":"Task assigned deleted."})
