@@ -49,4 +49,11 @@ def gettasks(request, user_id):
     task=Tasks.objects.filter(user_id=user_id)
     serializer=TaskSerializer(task, many=True)
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+def deletetasks(request,user_id):
+    task=Tasks.objects.get(id=user_id)
+    task.delete()
+
+    return Response({"message":"task assigned deleted."})
     
