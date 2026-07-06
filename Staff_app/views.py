@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Create your views here.
+#possessions
 #adding possessions
 @api_view(['POST'])
 def addposessions(request,user_id):
@@ -27,7 +28,20 @@ def getpossessions(request,user_id):
 
 @api_view(['DELETE'])
 def deletepossession(request, user_id):
-    possession= Possessions.objects.get(id=pk)
+    possession= Possessions.objects.get(id=user_id)
     possession.delete()
 
     return Response({"message":"Possession has been deleted."})
+
+#tasks
+@api_view(['POST'])
+def addtask(request,user_id):
+    data=request.data.copy()
+    data["user"]=user_id
+    serializer=TaskSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors)
+
+
