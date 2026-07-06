@@ -5,5 +5,6 @@ urlpatterns=[
     path('addpossessions/<int:user_id>/',addposessions,name ='addpossessions'),
     path('getpossessions/<int:user_id>/',getpossessions,name='getpossessions'),
     path('deletepossession/<int:user_id>/',deletepossession, name='deletepossession'),
-    path('addtask/<int:user_id>/', addtask,name="addtask"),
+    path('addtasks/<int:user_id>/', addtasks,name="addtask"),
+    path('gettasks/<int:user_id>/',gettasks,name='gettask'),
 ]

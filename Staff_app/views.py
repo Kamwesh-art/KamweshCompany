@@ -35,7 +35,7 @@ def deletepossession(request, user_id):
 
 #tasks
 @api_view(['POST'])
-def addtask(request,user_id):
+def addtasks(request,user_id):
     data=request.data.copy()
     data["user"]=user_id
     serializer=TaskSerializer(data=data)
@@ -44,4 +44,9 @@ def addtask(request,user_id):
         return Response(serializer.data)
     return Response(serializer.errors)
 
-
+@api_view(['GET'])
+def gettasks(request, user_id):
+    task=Tasks.objects.filter(user_id=user_id)
+    serializer=TaskSerializer(task, many=True)
+    return Response(serializer.data)
+    
