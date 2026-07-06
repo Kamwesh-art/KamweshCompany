@@ -69,14 +69,13 @@ def addcheckin(request, user_id):
     return Response(serializer.errors)
 
 @api_view(['GET'])
-def gettasks(request, user_id):
+def getcheckin(request, user_id):
     checkin=Checkin.objects.filter(user_id=user_id)
     serializer=CheckinSerializer(checkin, many=True)
     return Response(serializer.data)
 
 @api_view(['DELETE'])
-def deletetasks(request,user_id):
+def deletecheckin(request,user_id):
     checkin=Checkin.objects.get(id=user_id)
     checkin.delete()
-
-    return Response({"message":"Task assigned deleted."})
+    return Response({"message":"Checkin deleted."})

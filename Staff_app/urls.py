@@ -8,7 +8,12 @@ urlpatterns=[
     path('deletepossession/<int:user_id>/',deletepossession, name='deletepossession'),
     
     #tasks
-    path('addtasks/<int:user_id>/', addtasks,name="addtask"),
-    path('gettasks/<int:user_id>/',gettasks,name='gettask'),
-    path('deletetasks/<int:user_id>/',deletetasks,name='deletetask'),
+    path('addtasks/<int:user_id>/', addtasks,name='addtasks'),
+    path('gettasks/<int:user_id>/',gettasks,name='gettasks'),
+    path('deletetasks/<int:user_id>/',deletetasks,name='deletetasks'),
+
+    #Checkins
+    path('addcheckin/<int:user_id>/', addcheckin,name='addcheckin'),
+    path('getcheckin/<int:user_id>/',getcheckin,name='getcheckin'),
+    path('deletecheckin/<int:user_id>/',deletecheckin,name='deletecheckin'),
 ]
