@@ -90,6 +90,15 @@ def getcheckin(request, user_id):
     serializer=CheckinSerializer(checkin, many=True)
     return Response(serializer.data)
 
+@api_view(['PUT'])
+def updatecheckin(request,user_id):
+    checkin=Checkin.objects.get(id=user_id)
+    serializer=CheckinSerializer(checkin,data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message":"Checkin updates done",
+                         "data": serializer.data})
+
 @api_view(['DELETE'])
 def deletecheckin(request,user_id):
     checkin=Checkin.objects.get(id=user_id)
