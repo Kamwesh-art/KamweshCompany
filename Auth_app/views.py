@@ -41,3 +41,8 @@ def login(request):
          "access": str(refresh.access_token)
          }
     )
+
+@api_view(['POST'])
+def logout(request):
+    logout (request)
+    return Response({"message":"User Logged out successfully "})
