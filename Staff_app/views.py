@@ -50,12 +50,23 @@ def gettasks(request, user_id):
     serializer=TaskSerializer(task, many=True)
     return Response(serializer.data)
 
+@api_view(['PUT'])
+def updatetasks(request, user_id):
+    task= Tasks.objects.get(id=user_id)
+    serializer=TaskSerializer(task, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message":"Task has been updated successfully.",
+                         "data":serializer.data})
+
 @api_view(['DELETE'])
 def deletetasks(request,user_id):
     task=Tasks.objects.get(id=user_id)
     task.delete()
 
     return Response({"message":"Task assigned deleted."})
+
+
     
 #Checkins
 @api_view(['POST'])
