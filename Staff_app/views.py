@@ -17,7 +17,6 @@ def addposessions(request,user_id):
         return Response(serializer.data)
     return Response(serializer.errors)
 
-
 #getting possessions
 @api_view(['GET'])
 def getpossessions(request,user_id):
@@ -25,6 +24,14 @@ def getpossessions(request,user_id):
     serializer=PossessionSerializer(possessions, many=True)
     return Response(serializer.data)
 
+@api_view(['PUT'])
+def updatepossessions(request, user_id):
+    possessions=Possessions.objects.get(id=user_id)
+    serializer=PossessionSerializer(possessions, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message":"pOsssession updated successfully", 
+                         "data":serializer.data})
 
 @api_view(['DELETE'])
 def deletepossession(request, user_id):
@@ -65,8 +72,6 @@ def deletetasks(request,user_id):
     task.delete()
 
     return Response({"message":"Task assigned deleted."})
-
-
     
 #Checkins
 @api_view(['POST'])
