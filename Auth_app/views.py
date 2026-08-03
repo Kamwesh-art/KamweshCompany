@@ -7,6 +7,7 @@ from rest_framework.decorators import permission_classes
 from django.contrib.auth import authenticate
 from rest_framework import status 
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import *
 
 # Create your views here.
 @api_view(['POST'])
@@ -15,20 +16,34 @@ def register(request):
     if serializer_class.is_valid():
         serializer_class.save()
         return Response(serializer_class.data)
-    return Response ({"message":"Provide the required details"})
+    return Response (serializer_class.errors)
 
 @api_view(['POST'])
 def login(request):
     serializer= LoginSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
-    username=serializer.validated_data['username']
-    password=serializer.validated_data['password']
+    emailUsername =serializer.validated_data['username']
+    password =serializer.validated_data['password']
 
-    user= authenticate(
-        username =username,
+    # Find the user by either email or username
+    if '@' in emailUsername:
+        user = Users.objects.filter(email=emailUsername).first()
+    else:
+        user = Users.objects.filter(username=emailUsername).first()
+
+    if user is None:
+        return Response(
+            {"message": "Invalid credentials"},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+
+    # Authenticate using the username
+    user = authenticate(
+        username=user.username,
         password=password
     )
+
     if user is None:
         return Response({"message":"Invalid credentials"},status=status.HTTP_401_UNAUTHORIZED)
     
