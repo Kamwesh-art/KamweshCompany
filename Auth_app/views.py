@@ -12,11 +12,13 @@ from .models import *
 # Create your views here.
 @api_view(['POST'])
 def register(request):
-    serializer_class= RegisterSerializer(data=request.data)
-    if serializer_class.is_valid():
-        serializer_class.save()
-        return Response(serializer_class.data)
-    return Response (serializer_class.errors)
+    serializer= RegisterSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(serializer.errors)
+    return Response (serializer.errors, status=status.HTTP_400_BAD_REQUEST
+)
 
 @api_view(['POST'])
 def login(request):

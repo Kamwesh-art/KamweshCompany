@@ -3,7 +3,7 @@ from django.urls import path
 
 urlpatterns=[
     #possessions
-    path('addpossessions/<int:user_id>/',addposessions,name ='addpossessions'),
+    path('addpossessions/<int:user_id>/',addpossessions,name ='addpossessions'),
     path('getpossessions/<int:user_id>/',getpossessions,name='getpossessions'),
     path('updatepossessions/<int:user_id>/',updatepossessions,name='updatepossessions'),
     path('deletepossession/<int:user_id>/',deletepossession, name='deletepossession'),
