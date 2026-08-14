@@ -4,13 +4,14 @@ from .serializers import *
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from Auth_app.models import Users
 
 
 # Create your views here.
 #possessions
 # adding possessions
 @api_view(['POST'])
-def addposessions(request,user_id):
+def addpossessions(request,user_id):
     data= request.data.copy()
     data["user"]= user_id
     serializer=PossessionSerializer(data=data)
@@ -31,19 +32,26 @@ def addposessions(request,user_id):
 #         return Response(serializer.data)
 #     return Response(serializer.errors)
 
-#getting possessions
-@api_view(['GET'])
-def getpossessions(request,user_id):
-    possessions=Possessions.objects.filter(user=request.user)
-    serializer=PossessionSerializer(possessions, many=True)
-    return Response(serializer.data)
-
+# #getting possessions
 # @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def getpossessions(request):
-#     possessions = Possessions.objects.filter(user=request.user)
-#     serializer = PossessionSerializer(possessions, many=True)
+# def getpossessions(request,user_id):
+#     possessions=Possessions.objects.filter(user=request.user)
+#     serializer=PossessionSerializer(possessions, many=True)
 #     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getpossessions(request,user_id):
+    try:
+        user=Users.objects.get(id=user_id)
+        if not user:
+            return Response({'message':'User not found'})
+    except:
+        pass
+
+    possessions = Possessions.objects.filter(user=user)
+    serializer = PossessionSerializer(possessions, many=True)
+    return Response(serializer.data)
 
 @api_view(['PUT'])
 def updatepossessions(request, user_id):
