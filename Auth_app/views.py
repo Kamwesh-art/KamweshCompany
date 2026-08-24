@@ -55,8 +55,10 @@ def login(request):
         {
          "username":user.username,
          "refresh": str(refresh),
-         "access": str(refresh.access_token)
-         }
+         "access": str(refresh.access_token),
+         "email": user.email,
+         },
+        status=status.HTTP_200_OK
     )
 
 @api_view(['POST'])

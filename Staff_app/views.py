@@ -18,7 +18,7 @@ def addpossessions(request,user_id):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
-    return Response(serializer.errors)
+    return Response(serializer.errors,status=400)
 
 # @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
@@ -46,23 +46,42 @@ def getpossessions(request,user_id):
         user=Users.objects.get(id=user_id)
         if not user:
             return Response({'message':'User not found'})
-    except:
-        pass
+    except Exception as e:
+            return Response({"error": str(e)}, status=500)
 
     possessions = Possessions.objects.filter(user=user)
     serializer = PossessionSerializer(possessions, many=True)
     return Response(serializer.data)
 
 @api_view(['PUT'])
+# @permission_classes([IsAuthenticated])
 def updatepossessions(request, user_id):
-    possessions=Possessions.objects.get(id=user_id)
-    serializer=PossessionSerializer(possessions, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response({"message":"pOsssession updated successfully", 
-                         "data":serializer.data})
+    try:
+        user=Users.objects.get(id=user_id)
+        print(f'userfound{user}')
+        if not user:
+            return Response({'message':'User not found'})
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+    
+    itemId=request.data.get('id')
+    try:
+        possessions=Possessions.objects.get(user=user,id=itemId)
+        print(f'possession found{possessions}')
+        serializer=PossessionSerializer(possessions, data=request.data)
+        print(f'serializer{possessions}')
+
+        if serializer.is_valid():
+            print(f'serializer is valid')
+            serializer.save()
+            return Response({"message":"possession updated successfully", 
+                            "data":serializer.data})
+        return Response(serializer.errors)
+    except Exception as e:
+            return Response({"error": str(e)}, status=500)
 
 @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
 def deletepossession(request, user_id):
     possession= Possessions.objects.get(id=user_id)
     possession.delete()
@@ -78,12 +97,20 @@ def addtasks(request,user_id):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
-    return Response(serializer.errors)
+    return Response(serializer.errors,status=400)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def gettasks(request, user_id):
-    task=Tasks.objects.filter(user_id=user_id)
-    serializer=TaskSerializer(task, many=True)
+    try:
+        user = Users.objects.get(id=user_id)
+    except Users.DoesNotExist:
+        return Response(
+            {'message': 'User not found'},
+            status=404
+        )
+    tasks=Tasks.objects.filter(user=user)
+    serializer=TaskSerializer(tasks, many=True)
     return Response(serializer.data)
 
 @api_view(['PUT'])

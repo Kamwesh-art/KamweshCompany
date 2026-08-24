@@ -8,7 +8,7 @@ class Possessions(models.Model):
     serialno=models.CharField(max_length=700)
     item=models.CharField(max_length=255)
     quantity=models.IntegerField(blank=True,null=True)
-    cost=models.DecimalField(max_digits=1000,decimal_places=2)
+    cost=models.DecimalField(max_digits=1000,decimal_places=2,blank=True,null=True)
 
     def __str__(self):
         return self.item
